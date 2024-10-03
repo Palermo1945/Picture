@@ -26,7 +26,7 @@ app.post('/api/upload-and-generate', upload.single('file'), async (req, res) => 
     const fileExt = path.extname(req.file.originalname).toLowerCase();
     let extractedText = '';
     let extractedImages = [];
-    
+
     if (fileExt !== '.docx') {
         return res.status(400).json({ error: 'Unsupported file format. Please upload a .docx file.' });
     }
@@ -123,11 +123,12 @@ app.post('/api/upload-and-generate', upload.single('file'), async (req, res) => 
     } catch (error) {
         console.error('Error processing file or generating video:', error);
         return res.status(500).json({ error: 'Error processing file or generating video', details: error.message });
+        
     }
 });
 
-// Start the server
+// Bind server to the correct port (Heroku or local)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

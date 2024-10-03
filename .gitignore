@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Output directory
+output/
+
+# Environment variables
+.env
+credentials.json
+
+# Build files
+dist/
+build/
+
+# Other
+uploads/
