@@ -5,6 +5,8 @@ import JSZip from 'jszip';
 import cors from 'cors';
 import axios from 'axios';
 import path from 'path';
+import { fileURLToPath } from 'url'; // Import this to get __dirname in ES module
+
 import FormData from 'form-data';
 
 const app = express();
@@ -12,6 +14,13 @@ const app = express();
 // Enable CORS for all routes
 app.use(cors());
 app.use(express.json());
+
+// Get __dirname using import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the dist folder
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Set up storage for multer
 const storage = multer.memoryStorage();
@@ -124,6 +133,11 @@ app.post('/api/upload-and-generate', upload.single('file'), async (req, res) => 
         console.error('Error processing file or generating video:', error);
         return res.status(500).json({ error: 'Error processing file or generating video', details: error.message });
     }
+});
+
+// Catch-all route to serve the index.html file in dist
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 
 // Bind server to the correct port (Heroku or local)
