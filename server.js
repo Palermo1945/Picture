@@ -123,12 +123,21 @@ app.post('/api/upload-and-generate', upload.single('file'), async (req, res) => 
     } catch (error) {
         console.error('Error processing file or generating video:', error);
         return res.status(500).json({ error: 'Error processing file or generating video', details: error.message });
-        
+
     }
 });
 
 // Bind server to the correct port (Heroku or local)
 const PORT = process.env.PORT || 3000;
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Handle any requests that don't match the above
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
