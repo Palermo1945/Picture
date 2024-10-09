@@ -85,7 +85,6 @@ app.post('/api/upload-and-generate', upload.single('file'), async (req, res) => 
             } catch (uploadError) {
                 console.error('Error uploading image to D-ID API:', uploadError.message);
             }
-            
         }
 
         // Prepare payload for video generation
